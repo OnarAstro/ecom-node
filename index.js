@@ -261,10 +261,12 @@ app.post("/getcart", fetchUser, async (req, res) => {
 })
 
 
-app.listen(port, (error) => {
-  if (!error) {
-    console.log("Server is running on port: ", port);
-  } else {
-    console.log("Error: ", error);
-  }
-})
+// app.listen(port, (error) => {
+//   if (!error) {
+//     console.log("Server is running on port: ", port);
+//   } else {
+//     console.log("Error: ", error);
+//   }
+// })
+
+module.exports = app;
