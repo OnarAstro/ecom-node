@@ -1,4 +1,4 @@
-const port = process.env.PORT || 4000; // استخدام PORT من البيئة
+const port = 4000;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -6,34 +6,42 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
-require("dotenv").config(); // تأكد من تحميل المتغيرات البيئية
+const { connect } = require("http2");
+const dotenv = require("dotenv");
+const { error } = require("console");
 
 app.use(express.json());
 app.use(cors());
 
-// Database Connection with MongoDB
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.error("MongoDB connection error:", err));
+dotenv.config();
 
-// Image storage configuration
-const storage = multer.memoryStorage(); // استخدام التخزين في الذاكرة
-const upload = multer({ storage: storage });
 
-// API creation
+// Database Connection with Mongodb
+mongoose.connect(process.env.MONGODB_URL);
+
+// Api creation
 app.get("/", (req, res) => {
   res.send("Backend API is running");
-});
+})
 
-// Upload endpoint
+
+// Image storage ragine
+const storage = multer.diskStorage({
+  destination: "./upload/images",
+  filename: (req, file, cb) => {
+    return cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+  }
+})
+
+const upload = multer({storage: storage})
+// creating uplload endpoint for images
+app.use('/images', express.static("upload/images"))
 app.post("/upload", upload.single("product"), (req, res) => {
-  // هنا يمكنك إضافة منطق لتحميل الصورة إلى خدمة تخزين سحابية
   res.json({
     success: true,
-    image_url: `http://localhost:${port}/images/${req.file.filename}` // يجب تعديل هذا حسب التخزين السحابي
-  });
-});
-
+    image_url: `http://localhost:${port}/images/${req.file.filename}`
+  })
+})
 
 // Schema for creating products
 const Product = mongoose.model("Product", {
@@ -253,7 +261,13 @@ app.post("/getcart", fetchUser, async (req, res) => {
 })
 
 
-// Start server
-app.listen(port, () => {
-  console.log("Server is running on port: ", port);
-});
+app.listen(port, (error) => {
+  if (!error) {
+    console.log("Server is running on port: ", port);
+  } else {
+    console.log("Error: ", error);
+  }
+})
+
+
+
