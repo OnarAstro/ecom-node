@@ -1,5 +1,5 @@
-const PORT = process.env.PORT || 4000;
-const URL = process.env.BASE_URL || `http://localhost:${PORT}`;
+const PORT = process.env.PORT;
+const URL = process.env.BASE_URL;
                  
 const express = require("express");
 const app = express();
