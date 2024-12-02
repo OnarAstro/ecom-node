@@ -40,7 +40,7 @@ app.use('/images', express.static("upload/images"))
 app.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     success: true,
-    image_url: `${URL}/images/${req.file.filename}` 
+    image_url: `PORT` 
   })
 })
 
