@@ -1,5 +1,4 @@
 const PORT = process.env.PORT || 4000;;
-const imageUrl = `${process.env.BASE_URL || 'http://localhost:' + process.env.PORT}/images/${req.file.filename}`;
 
 const express = require("express");
 const app = express();
@@ -41,7 +40,7 @@ app.use('/images', express.static("upload/images"))
 app.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     success: true,
-    image_url: imageUrl,
+    image_url: `${process.env.BASE_URL || 'http://localhost:' + process.env.PORT}/images/${req.file.filename}`,
   })
 })
 
