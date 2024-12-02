@@ -1,4 +1,6 @@
 const PORT = process.env.PORT || 4000;;
+const imageUrl = `${process.env.BASE_URL || 'http://localhost:' + process.env.PORT}/images/${req.file.filename}`;
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -39,7 +41,7 @@ app.use('/images', express.static("upload/images"))
 app.post("/upload", upload.single("product"), (req, res) => {
   res.json({
     success: true,
-    image_url: `https://ecom-node-production.up.railway.app/images/${req.file.filename}` || `http://localhost:${port}/images/${req.file.filename}` 
+    image_url: imageUrl,
   })
 })
 
