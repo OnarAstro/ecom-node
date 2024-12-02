@@ -1,4 +1,4 @@
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const URL = process.env.BASE_URL || `http://localhost:${PORT}`;
                  
 const express = require("express");
@@ -39,10 +39,10 @@ const upload = multer({storage: storage})
 // creating uplload endpoint for images
 app.use('/images', express.static("upload/images"))
 app.post("/upload", upload.single("product"), (req, res) => {
-  const imageUrl = `${URL}/images/${req.file.filename}`;
+  const ImageUrl = `${URL}/images/${req.file.filename}`;
   res.json({
     success: true,
-    image_url: imageUrl
+    image_url: ImageUrl
   })
 })
 
